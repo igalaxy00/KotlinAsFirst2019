@@ -83,7 +83,7 @@ fun timeForHalfWay(
     } else {
         if ((t2 * v2 + t1 * v1 + t3 * v3) / 2 > (t1 * v1)) {
             t1 + ((t2 * v2 + t1 * v1 + t3 * v3) / 2 - (t1 * v1)) / v2
-        } else (t2 * v2 + t1 * v1 + t3 * v3) / 2 / v1
+        } else (t2 * v2 + t1 * v1 + t3 * v3) / 2 / v1 
     }
 
 /**
