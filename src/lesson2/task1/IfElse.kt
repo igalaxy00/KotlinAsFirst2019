@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -63,8 +64,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String =
-    if ((age > 10) && (age < 20) || (age > 110) && (age < 120)) ("$age лет") else if (age % 10 in 2..4) ("$age года") else if (age % 10 == 1) ("$age год") else ("$age лет")
+fun ageDescription(age: Int): String = when {
+    ((age > 10) && (age < 20) || (age > 110) && (age < 120)) -> ("$age лет")
+    (age % 10 in 2..4) -> ("$age года")
+    (age % 10 == 1) -> ("$age год")
+    else -> ("$age лет")
+}
 
 /**
  * Простая
@@ -86,7 +91,7 @@ fun timeForHalfWay(
         } else (t2 * v2 + t1 * v1 + t3 * v3) / 2 / v1
     }
 
-/** 
+/**
  * Простая
  *
  * Нa шахматной доске стоят черный король и две белые ладьи (ладья бьет по горизонтали и вертикали).
@@ -100,7 +105,12 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int = when {
+    (((kingX == rookX1) or (kingY == rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) -> 3
+    ((kingX == rookX1) or (kingY == rookY1)) and (kingX != rookX2) and (kingY != rookY2) -> 1
+    ((kingX == rookX2) or (kingY == rookY2)) and (kingX != rookX1) and (kingY != rookY1) -> 2
+    else -> 0
+}
 
 /**
  * Простая
@@ -116,7 +126,12 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int = when {
+    ((kingX == rookX) or (kingY == rookY)) and ((abs(kingX - bishopX) != abs(kingY - bishopY))) -> 1
+    ((kingX != rookX) and (kingY != rookY)) and ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 2
+    ((kingX == rookX) or (kingY == rookY)) and ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
+    else -> 0
+}
 
 /**
  * Простая
@@ -167,4 +182,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
  */
 
 
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    ((c < a) and (a <= d) and (d < b)) -> d - a
+    ((a < c) and (c <= b) and (b < d)) -> b - c
+    ((c < a) and (a < b) and (b < d)) -> b - a
+    ((a < c) and (c < d) and (d < b)) -> d - c
+    else -> -1
+}
