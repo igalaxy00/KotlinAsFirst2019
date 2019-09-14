@@ -142,29 +142,29 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int =
-    if ((a + b > c) and (b + c > a) and (a + c > b))
+    if ((a + b >= c) and (b + c >= a) and (a + c >= b))
         when {
-            ((a > b) and (a > c)) or ((a == b) and (a > c)) or ((a == c) and (a > b)) -> {
+            ((a >= b) and (a >= c)) or ((a == b) and (a >= c)) or ((a == c) and (a >= b)) -> {
                 when {
                     (a * a == b * b + c * c) -> 1
-                    (a * a <= b * b + c * c) -> 0
-                    (a * a >= b * b + c * c) -> 2
+                    (a * a < b * b + c * c) -> 0
+                    (a * a > b * b + c * c) -> 2
                     else -> -1
                 }
             }
             ((c > b) and (c > a)) or ((c == b) and (c > a)) or ((c == a) and (c > b)) -> {
                 when {
                     (c * c == b * b + a * a) -> 1
-                    (c * c <= b * b + a * a) -> 0
-                    (c * c >= b * b + a * a) -> 2
+                    (c * c < b * b + a * a) -> 0
+                    (c * c > b * b + a * a) -> 2
                     else -> -1
                 }
             }
             ((b > a) and (b > c)) or ((b == a) and (b > c)) or ((b == c) and (b > a)) -> {
                 when {
                     (b * b == c * c + a * a) -> 1
-                    (b * b <= c * c + a * a) -> 0
-                    (b * b >= c * c + a * a) -> 2
+                    (b * b < c * c + a * a) -> 0
+                    (b * b > c * c + a * a) -> 2
                     else -> -1
                 }
             }
@@ -187,5 +187,6 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
     ((a < c) and (c <= b) and (b < d)) -> b - c
     ((c < a) and (a < b) and (b < d)) -> b - a
     ((a < c) and (c < d) and (d < b)) -> d - c
+    ((a == b) and (b == c) and (c == d)) -> 0
     else -> -1
 }
