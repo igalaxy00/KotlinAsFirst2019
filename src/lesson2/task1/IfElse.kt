@@ -183,10 +183,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
 
 
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
-    ((c < a) and (a <= d) and (d < b)) -> d - a
-    ((a < c) and (c <= b) and (b < d)) -> b - c
-    ((c < a) and (a < b) and (b < d)) -> b - a
-    ((a < c) and (c < d) and (d < b)) -> d - c
-    ((a == b) and (b == c) and (c == d)) -> 0
+    ((a <= c) && (c <= b) && (b <= d)) -> b - c
+    ((a <= c) && (d <= b)) -> d - c
+    ((c <= a) && (b <= d)) -> b - a
+    ((c <= a) && (a <= d) && (d <= b)) -> d - a
     else -> -1
 }
