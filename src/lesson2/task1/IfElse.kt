@@ -3,6 +3,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -82,14 +83,16 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double =
-    if ((t1 * v1 + t2 * v2) < (t2 * v2 + t1 * v1 + t3 * v3) / 2) {
-        ((t2 * v2 + t1 * v1 + t3 * v3) / 2 - (t1 * v1 + t2 * v2)) / v3 + t1 + t2
+): Double {
+    val s = (v1 * t1 + v2 * t2 + v3 * t3) / 2
+    return if ((t1 * v1 + t2 * v2) < s) {
+        (s - (t1 * v1 + t2 * v2)) / v3 + t1 + t2
     } else {
-        if ((t2 * v2 + t1 * v1 + t3 * v3) / 2 > (t1 * v1)) {
-            t1 + ((t2 * v2 + t1 * v1 + t3 * v3) / 2 - (t1 * v1)) / v2
-        } else (t2 * v2 + t1 * v1 + t3 * v3) / 2 / v1
+        if (s > (t1 * v1)) {
+            t1 + (s - (t1 * v1)) / v2
+        } else s / v1
     }
+}
 
 /**
  * Простая
@@ -106,9 +109,9 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int = when {
-    (((kingX == rookX1) or (kingY == rookY1)) and ((kingX == rookX2) or (kingY == rookY2))) -> 3
-    ((kingX == rookX1) or (kingY == rookY1)) and (kingX != rookX2) and (kingY != rookY2) -> 1
-    ((kingX == rookX2) or (kingY == rookY2)) and (kingX != rookX1) and (kingY != rookY1) -> 2
+    (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> 3
+    ((kingX == rookX1) || (kingY == rookY1)) && (kingX != rookX2) && (kingY != rookY2) -> 1
+    ((kingX == rookX2) || (kingY == rookY2)) && (kingX != rookX1) && (kingY != rookY1) -> 2
     else -> 0
 }
 
@@ -127,9 +130,9 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int = when {
-    ((kingX == rookX) or (kingY == rookY)) and ((abs(kingX - bishopX) != abs(kingY - bishopY))) -> 1
-    ((kingX != rookX) and (kingY != rookY)) and ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 2
-    ((kingX == rookX) or (kingY == rookY)) and ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
+    ((kingX == rookX) || (kingY == rookY)) && ((abs(kingX - bishopX) != abs(kingY - bishopY))) -> 1
+    ((kingX != rookX) && (kingY != rookY)) && ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 2
+    ((kingX == rookX) || (kingY == rookY)) && ((abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
     else -> 0
 }
 
@@ -141,36 +144,30 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int =
-    if ((a + b >= c) and (b + c >= a) and (a + c >= b))
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val max: Double
+    val side2: Double
+    val side3: Double
+    if (a + b > c && a + c > b && b + c > a) {
         when {
-            ((a >= b) and (a >= c)) or ((a == b) and (a >= c)) or ((a == c) and (a >= b)) -> {
-                when {
-                    (a * a == b * b + c * c) -> 1
-                    (a * a < b * b + c * c) -> 0
-                    (a * a > b * b + c * c) -> 2
-                    else -> -1
-                }
+            (a > b) && (a > c) || (a == b) && (a > c) || (a == c) && (a > b) -> {
+                max = a; side2 = b; side3 = c
             }
-            ((c > b) and (c > a)) or ((c == b) and (c > a)) or ((c == a) and (c > b)) -> {
-                when {
-                    (c * c == b * b + a * a) -> 1
-                    (c * c < b * b + a * a) -> 0
-                    (c * c > b * b + a * a) -> 2
-                    else -> -1
-                }
+            (b > a) && (b > c) || ((b == a) && (b > c)) || (b == c) && (b > a) -> {
+                max = b; side2 = a; side3 = c
             }
-            ((b > a) and (b > c)) or ((b == a) and (b > c)) or ((b == c) and (b > a)) -> {
-                when {
-                    (b * b == c * c + a * a) -> 1
-                    (b * b < c * c + a * a) -> 0
-                    (b * b > c * c + a * a) -> 2
-                    else -> -1
-                }
+            else -> {
+                max = c; side2 = a; side3 = b
             }
-            else -> -1
         }
-    else -1
+        return when {
+            (sqr(max) == sqr(side2) + sqr(side3)) -> 1
+            (sqr(max) < sqr(side2) + sqr(side3)) -> 0
+            else -> return 2
+        }
+    } else return -1
+}
+
 
 /**
  * Средняя
@@ -184,7 +181,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
 
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
     ((a <= c) && (c <= b) && (b <= d)) -> b - c
-    ((a <= c) && (d <= b)) -> d - c 
+    ((a <= c) && (d <= b)) -> d - c
     ((c <= a) && (b <= d)) -> b - a
     ((c <= a) && (a <= d) && (d <= b)) -> d - a
     else -> -1

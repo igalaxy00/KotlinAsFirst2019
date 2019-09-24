@@ -3,6 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import java.lang.Math.pow
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -115,14 +118,25 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var i = 0
+    var answer = 0.0
+    while (i < v.size) {
+        answer += sqr(v[i])
+        i += 1
+    }
+    return sqrt(answer)
+}
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    if (list.isEmpty()) return 0.0
+    return (list.sum()) / (list.size)
+}
 
 /**
  * Средняя
@@ -132,7 +146,15 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val a = mean(list)
+    var i = 0
+    for (element in list) {
+        list[i] -= a
+        i += 1
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -141,7 +163,15 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var i = 0
+    var answer = 0
+    while (i < a.size) {
+        answer += a[i] * b[i]
+        i += 1
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -151,7 +181,15 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var answer = 0
+    var i = 0
+    while (i < p.size) {
+        answer += p[i] * ((x.toDouble()).pow(i.toDouble())).toInt()
+        i += 1
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -163,7 +201,16 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    var previous = 0
+    var i = 0
+    for (element in list) {
+        list[i] += previous
+        previous = list[i]
+        i += 1
+    }
+    return list
+}
 
 /**
  * Средняя

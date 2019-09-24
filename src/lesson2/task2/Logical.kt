@@ -20,10 +20,8 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = when {
-    (number % 10 + number / 10 % 10 == number / 100 % 10 + number / 1000 % 10) -> true
-    else -> false
-}
+fun isNumberHappy(number: Int): Boolean = (number % 10 + number / 10 % 10 == number / 100 % 10 + number / 1000 % 10)
+
 
 /**
  * Простая
@@ -32,10 +30,8 @@ fun isNumberHappy(number: Int): Boolean = when {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = when {
-    (x1 == x2) or (y1 == y2) or ((x1 - x2) == (y1 - y2)) or ((x1 - x2) == -(y1 - y2)) -> true
-    else -> false
-}
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    (x1 == x2) || (y1 == y2) || ((x1 - x2) == (y1 - y2)) || ((x1 - x2) == -(y1 - y2))
 
 
 /**
@@ -46,9 +42,9 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = when {
  */
 fun daysInMonth(month: Int, year: Int): Int =
     when {
-        ((((year % 4 == 0) and (year % 100 != 0)) or (year % 400 == 0)) and (month == 2)) -> 29
-        ((((year % 4 != 0) and (year % 100 == 0)) or (year % 400 != 0)) and (month == 2)) -> 28
-        ((month == 1) or (month == 3) or (month == 5) or (month == 7) or (month == 8) or (month == 10) or (month == 12)) -> 31
+        ((((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) && (month == 2)) -> 29
+        (((year % 4 != 0) || (year % 400 != 0)) && (month == 2)) -> 28
+        ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) -> 31
         else -> 30
     }
 
@@ -64,10 +60,8 @@ fun daysInMonth(month: Int, year: Int): Int =
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = when {
-    ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) < r2 * r2) and (r2 - kotlin.math.abs(kotlin.math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))) >= r1) -> true
-    else -> false
-}
+): Boolean =
+    (sqr((x1 - x2)) + sqr((y1 - y2)) < sqr(r2)) && (r2 - kotlin.math.sqrt(sqr((x2 - x1)) + sqr((y2 - y1))) >= r1)
 
 /**
  * Средняя
@@ -79,8 +73,8 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
-    ((a <= r) and (b <= s)) or ((a <= s) and (b <= r)) -> true
-    ((a <= r) and (c <= s)) or ((a <= s) and (c <= r)) -> true
-    ((b <= r) and (c <= s)) or ((b <= s) and (c <= r)) -> true
+    ((a <= r) && (b <= s)) || ((a <= s) && (b <= r)) -> true
+    ((a <= r) && (c <= s)) || ((a <= s) && (c <= r)) -> true
+    ((b <= r) && (c <= s)) || ((b <= s) && (c <= r)) -> true
     else -> false
 }
