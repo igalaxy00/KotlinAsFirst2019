@@ -77,7 +77,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var count = 1
     var number = n
-    while (number > 9) {
+    while (abs(number) > 9) {
         count += 1
         number /= 10
     }
@@ -174,8 +174,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
         max = n
         min = m
     }
+    if (max == 1 && min == 1) return true
     if (max % min == 0) return false
-    while (i < sqrt(min.toDouble()) + 1) {
+
+    while ((i < (min.toDouble() / 2) + 1)) {
         i += 1
         if ((max % i == 0) && (min % i == 0)) return false
     }
@@ -290,7 +292,7 @@ fun revert(n: Int): Int {
         a /= 10
     }
     while (c > 0) {
-        answer += (c % 10) * 10.0.pow((b - i).toDouble())
+        answer += (c % 10) * (10.0).pow((b - i).toDouble())
         i += 1
         c /= 10
     }
@@ -306,7 +308,11 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = revert(n) == n
+fun isPalindrome(n: Int): Boolean {
+    val a = revert(n)
+    if (a == n) return true
+    return false
+}
 
 /**
  * Средняя
