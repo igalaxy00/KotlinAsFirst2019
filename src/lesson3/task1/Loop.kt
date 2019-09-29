@@ -144,17 +144,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var answer = 0
-    var i = n / 2 + 1
-    while (i > 0) {
-        i -= 1
-        if (n % i == 0) return i
-        else answer = n
-    }
-    return answer
-}
-
+fun maxDivisor(n: Int): Int = n/ minDivisor(n)
 
 /**
  * Простая
@@ -176,7 +166,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     }
     if (max == 1 && min == 1) return true
     if (max % min == 0) return false
-
+    if (max == 1 && min == 2 || max == 2 && min == 1) return true
     while ((i < (min.toDouble() / 2) + 1)) {
         i += 1
         if ((max % i == 0) && (min % i == 0)) return false
@@ -308,11 +298,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    val a = revert(n)
-    if (a == n) return true
-    return false
-}
+fun isPalindrome(n: Int): Boolean = (revert(n) == n)
 
 /**
  * Средняя
