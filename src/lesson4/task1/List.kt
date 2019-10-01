@@ -350,18 +350,18 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val ArabicNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val RomanNumbers = listOf<String>(
+    val arabicNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val romanNumbers = listOf<String>(
         "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X",
         "IX", "V", "IV", "I"
     )
     var result = ""
     var m = n
     var i = 0
-    while (i < ArabicNumbers.size) {
-        while (m >= ArabicNumbers[i]) {
-            result += RomanNumbers[i]
-            m -= ArabicNumbers[i]
+    while (i < arabicNumbers.size) {
+        while (m >= arabicNumbers[i]) {
+            result += romanNumbers[i]
+            m -= arabicNumbers[i]
         }
         i += 1
     }

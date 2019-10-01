@@ -85,13 +85,12 @@ fun timeForHalfWay(
     t3: Double, v3: Double
 ): Double {
     val s = (v1 * t1 + v2 * t2 + v3 * t3) / 2
-    return if ((t1 * v1 + t2 * v2) < s) {
-        (s - (t1 * v1 + t2 * v2)) / v3 + t1 + t2
-    } else {
-        if (s > (t1 * v1)) {
-            t1 + (s - (t1 * v1)) / v2
-        } else s / v1
+    return when {
+        ((t1 * v1 + t2 * v2) < s) -> (s - (t1 * v1 + t2 * v2)) / v3 + t1 + t2
+        (s > (t1 * v1)) -> t1 + (s - (t1 * v1)) / v2
+        else -> s / v1
     }
+
 }
 
 /**
@@ -110,8 +109,8 @@ fun whichRookThreatens(
     rookX2: Int, rookY2: Int
 ): Int = when {
     (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) -> 3
-    ((kingX == rookX1) || (kingY == rookY1)) && (kingX != rookX2) && (kingY != rookY2) -> 1
-    ((kingX == rookX2) || (kingY == rookY2)) && (kingX != rookX1) && (kingY != rookY1) -> 2
+    ((kingX == rookX1) || (kingY == rookY1)) -> 1
+    ((kingX == rookX2) || (kingY == rookY2)) -> 2
     else -> 0
 }
 
@@ -145,27 +144,20 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val max: Double
-    val side2: Double
-    val side3: Double
-    if (a + b > c && a + c > b && b + c > a) {
-        when {
-            (a > b) && (a > c) || (a == b) && (a > c) || (a == c) && (a > b) -> {
-                max = a; side2 = b; side3 = c
-            }
-            (b > a) && (b > c) || ((b == a) && (b > c)) || (b == c) && (b > a) -> {
-                max = b; side2 = a; side3 = c
-            }
-            else -> {
-                max = c; side2 = a; side3 = b
-            }
-        }
-        return when {
-            (sqr(max) == sqr(side2) + sqr(side3)) -> 1
-            (sqr(max) < sqr(side2) + sqr(side3)) -> 0
-            else -> return 2
-        }
-    } else return -1
+    fun mid(a: Double, b: Double, c: Double) = when {
+        a in b..c || a in c..b -> a
+        b in a..c || b in c..a -> b
+        else -> c
+    }
+    val side2 = mid(a, b, c)
+    val max = maxOf(a, b, c)
+    val side3 = minOf(a, b, c)
+    return if (max > side2 + side3) -1
+    else when {
+        (sqr(max) == sqr(side2) + sqr(side3)) -> 1
+        (sqr(max) < sqr(side2) + sqr(side3)) -> 0
+        else -> 2
+    }
 }
 
 

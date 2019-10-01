@@ -3,8 +3,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
-import java.lang.Math.abs
 import java.lang.Math.sqrt
+import kotlin.math.abs
 
 /**
  * Пример
@@ -31,7 +31,7 @@ fun isNumberHappy(number: Int): Boolean = (number % 10 + number / 10 % 10 == num
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    (x1 == x2) || (y1 == y2) || ((x1 - x2) == (y1 - y2)) || ((x1 - x2) == -(y1 - y2))
+    (x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2)) || ((x1 - x2) == -(y1 - y2))
 
 
 /**
@@ -43,7 +43,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
 fun daysInMonth(month: Int, year: Int): Int =
     when {
         ((((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) && (month == 2)) -> 29
-        (((year % 4 != 0) || (year % 400 != 0)) && (month == 2)) -> 28
+        ((year % 400 != 0) && (month == 2)) -> 28
         ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) -> 31
         else -> 30
     }
@@ -72,9 +72,8 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
-    ((a <= r) && (b <= s)) || ((a <= s) && (b <= r)) -> true
-    ((a <= r) && (c <= s)) || ((a <= s) && (c <= r)) -> true
-    ((b <= r) && (c <= s)) || ((b <= s) && (c <= r)) -> true
-    else -> false
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    return ((a <= r) && (b <= s)) || ((a <= s) && (b <= r)) ||
+            ((a <= r) && (c <= s)) || ((a <= s) && (c <= r)) ||
+            ((b <= r) && (c <= s)) || ((b <= s) && (c <= r))
 }

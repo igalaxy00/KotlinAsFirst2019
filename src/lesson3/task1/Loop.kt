@@ -5,11 +5,8 @@ package lesson3.task1
 import lesson1.task1.sqr
 import java.lang.Double.NaN
 import java.lang.Math.pow
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.sqrt
-import kotlin.arrayOfNulls as arrayOfNulls1
+import kotlin.math.*
+
 
 /**
  * Пример
@@ -101,7 +98,7 @@ fun fib(n: Int): Int {
             num2 = num3 + num1
         }
         num2
-    } else (1)
+    } else 1
 }
 
 /**
@@ -120,7 +117,7 @@ fun lcm(m: Int, n: Int): Int {
         else
             b %= a
     }
-    return (multi1 / (a + b))
+    return multi1 / (a + b)
 }
 
 /**
@@ -144,7 +141,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = n/ minDivisor(n)
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -155,15 +152,8 @@ fun maxDivisor(n: Int): Int = n/ minDivisor(n)
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     var i = 1
-    val max: Int
-    val min: Int
-    if (m > n) {
-        max = m
-        min = n
-    } else {
-        max = n
-        min = m
-    }
+    val max = maxOf(m, n)
+    val min = minOf(m, n)
     if (max == 1 && min == 1) return true
     if (max % min == 0) return false
     if (max == 1 && min == 2 || max == 2 && min == 1) return true
@@ -184,7 +174,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     for (i in m..n) {
-        if (sqrt(i.toDouble()) == sqrt(i.toDouble()).toInt().toDouble()) return true
+        if (sqrt(i.toDouble()) == floor(sqrt(i.toDouble()))) return true
     }
     return false
 }
@@ -298,7 +288,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = (revert(n) == n)
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -310,16 +300,12 @@ fun isPalindrome(n: Int): Boolean = (revert(n) == n)
  */
 fun hasDifferentDigits(n: Int): Boolean {
     val a = n % 10
-    var b = 0
-    var c = 0
     var m = n / 10
     while (m > 0) {
-        if (m % 10 == a) b += 1
-        c += 1
+        if (m % 10 != a) return true
         m /= 10
     }
-    if (b == c) return false
-    return true
+    return false
 }
 
 /**
@@ -335,16 +321,12 @@ fun squareSequenceDigit(n: Int): Int {
     var i = 0
     var a = 1
     var b: Int
-    var c = 0
+    var c: Int
     while (i < n) {
         b = sqr(a)
-        while (b > 0) {
-            c += 1
-            b /= 10
-        }
+        c = digitNumber(b)
         i += c
         a += 1
-        c = 0
     }
     return ((sqr(a - 1) / 10.0.pow((i - n).toDouble())) % 10).toInt()
 
@@ -363,16 +345,12 @@ fun fibSequenceDigit(n: Int): Int {
     var i = 0
     var a = 1
     var b: Int
-    var c = 0
+    var c: Int
     while (i < n) {
         b = fib(a)
-        while (b > 0) {
-            c += 1
-            b /= 10
-        }
+        c = digitNumber(b)
         i += c
         a += 1
-        c = 0
     }
     return ((fib(a - 1) / 10.0.pow((i - n).toDouble())) % 10).toInt()
 
