@@ -250,7 +250,7 @@ fun cos(x: Double, eps: Double): Double {
         i += 2
     }
     cos += (c.pow(i) / factorial(i)) * b
-    return cos
+    return cos 
 
 }
 
