@@ -149,6 +149,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         b in a..c || b in c..a -> b
         else -> c
     }
+
     val side2 = mid(a, b, c)
     val max = maxOf(a, b, c)
     val side3 = minOf(a, b, c)

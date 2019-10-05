@@ -3,8 +3,6 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import java.lang.Double.NaN
-import java.lang.Math.pow
 import kotlin.math.*
 
 
@@ -126,14 +124,14 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var answer = 0
+
     var i = 1
     while (i < sqrt(n.toDouble())) {
         i += 1
         if (n % i == 0) return i
-        else answer = n
+
     }
-    return answer
+    return n
 }
 
 /**
@@ -250,7 +248,7 @@ fun cos(x: Double, eps: Double): Double {
         i += 2
     }
     cos += (c.pow(i) / factorial(i)) * b
-    return cos 
+    return cos
 
 }
 
@@ -262,15 +260,10 @@ fun cos(x: Double, eps: Double): Double {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var a = n
     var c = n
-    var b = 0
+    val b = digitNumber(n)
     var i = 1
     var answer = 0.0
-    while (a > 0) {
-        b += 1
-        a /= 10
-    }
     while (c > 0) {
         answer += (c % 10) * (10.0).pow((b - i).toDouble())
         i += 1
