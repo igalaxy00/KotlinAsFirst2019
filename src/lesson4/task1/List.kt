@@ -280,7 +280,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String = convert(n, base).joinToString(separator = "", transform = {
-    if (it > 10) ('a' + it - 10).toString()
+    if (it >= 10) ('a' + it - 10).toString()
     else "$it"
 })
 
