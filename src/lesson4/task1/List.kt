@@ -279,23 +279,11 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
+fun convertToString(n: Int, base: Int): String = convert(n, base).joinToString(separator = "", transform = {
+    if (it > 10) ('a' + it - 10).toString()
+    else "$it"
+})
 
-    var result = ""
-    var m = n
-    var l: String
-    val abc = "0123456789abcdefghijklmnopqrstuvwxyz"
-    if (m == 0) {
-        result += (0)
-        return result
-    }
-    while (m > 0) {
-        l = abc[(m % base)].toString()
-        result += l
-        m /= base
-    }
-    return result.reversed()
-}
 
 /**
  * Средняя
@@ -329,18 +317,17 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val abc = "0123456789abcdefghijklmnopqrstuvwxyz"
-    var a = 0.0
-    var b = 0.0
-    var i = str.length - 1
-    while (i > -1) {
-        a += abc.indexOf(str[i], -1) * (base.toDouble()).pow(b)
-        b += 1
-        i -= 1
+    val list1 = mutableListOf<Int>()
+    val a = str.length
+    var i = 0
+    while (i < a) {
+        if (str[i].isDigit()) list1.add(str[i].toInt() - 48)
+        else list1.add((str[i]).toInt() - 87)
+        i++
     }
-    return a.toInt()
-}
+    return decimal(list1, base)
 
+}
 /**
  * Сложная
  *
