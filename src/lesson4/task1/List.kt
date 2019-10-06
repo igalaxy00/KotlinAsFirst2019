@@ -326,7 +326,6 @@ fun decimalFromString(str: String, base: Int): Int {
         i++
     }
     return decimal(list1, base)
-
 }
 /**
  * Сложная
@@ -337,8 +336,8 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val arabicNumbers = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val romanNumbers = listOf<String>(
+    val arabicNumbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val romanNumbers = listOf(
         "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X",
         "IX", "V", "IV", "I"
     )
