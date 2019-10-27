@@ -327,6 +327,7 @@ fun decimalFromString(str: String, base: Int): Int {
     }
     return decimal(list1, base)
 }
+
 /**
  * Сложная
  *

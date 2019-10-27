@@ -133,6 +133,7 @@ fun filterByCountryCode(
         if (!phone.startsWith(countryCode)) {
             namesToRemove.add(name)
         }
+        }
     }
 
     for (name in namesToRemove) {

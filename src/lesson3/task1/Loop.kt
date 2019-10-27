@@ -149,15 +149,14 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var i = 1
-    val max = maxOf(m, n)
-    val min = minOf(m, n)
-    if (max == 1 && min == 1) return true
-    if (max % min == 0) return false
-    if (max == 1 && min == 2 || max == 2 && min == 1) return true
-    while ((i < (min.toDouble() / 2) + 1)) {
-        i += 1
-        if ((max % i == 0) && (min % i == 0)) return false
+    if (m % 2 == 0 && n % 2 == 0) {
+        return false
+    } else {
+        var i = 3
+        while (i <= (min(m, n))) {
+            if (m % i == 0 && n % i == 0) return false
+            i += 2
+        }
     }
     return true
 }
@@ -171,9 +170,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in m..n) {
-        if (sqrt(i.toDouble()) == floor(sqrt(i.toDouble()))) return true
-    }
+    val res = floor(sqrt(n.toDouble())).toInt()
+    if (res * res in m..n) return true
     return false
 }
 
@@ -260,16 +258,13 @@ fun cos(x: Double, eps: Double): Double {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var c = n
-    val b = digitNumber(n)
-    var i = 1
-    var answer = 0.0
-    while (c > 0) {
-        answer += (c % 10) * (10.0).pow((b - i).toDouble())
-        i += 1
-        c /= 10
+    var a = 0
+    var m = n
+    while (m > 0) {
+        a = a * 10 + m % 10
+        m /= 10
     }
-    return (answer).toInt()
+    return a
 }
 
 /**

@@ -3,8 +3,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
-import java.lang.Math.sqrt
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -40,13 +40,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int =
-    when {
-        ((((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) && (month == 2)) -> 29
-        ((year % 400 != 0) && (month == 2)) -> 28
-        ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) -> 31
-        else -> 30
-    }
+fun daysInMonth(month: Int, year: Int): Int {
+    val m = listOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    if (year % 100 != 0 && year % 100 % 4 == 0 || year % 400 == 0) return 29
+    if (month != 2) return m[month - 1]
+    return 28
+}
 
 
 /**
@@ -61,7 +60,7 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean =
-    (sqr((x1 - x2)) + sqr((y1 - y2)) < sqr(r2)) && (r2 - kotlin.math.sqrt(sqr((x2 - x1)) + sqr((y2 - y1))) >= r1)
+    (sqr((x1 - x2)) + sqr((y1 - y2)) < sqr(r2)) && (r2 - sqrt(sqr((x2 - x1)) + sqr((y2 - y1))) >= r1)
 
 /**
  * Средняя
