@@ -490,7 +490,7 @@ fun addNullables(a: Int?, b: Int?): Int = (a ?: 0) + (b ?: 0)
 
 [source,kotlin]
 ----
-fun sumOfNullableList(list: List<Int>?): Int = list?.sum()  // ERROR
+    fun sumOfNullableList(list: List<Int>?): Int = list?.sum()  // ERROR
 ----
 
 Такой код не будет работать, потому что `list?.sum()` может вернуть `null`. Если подсмотреть в IntelliJ IDEA, то можно увидеть, что тип такого выражения, --- `Int?`; чтобы исправить ситуацию с типом возвращаемого значения, можно воспользоваться элвис-оператором.

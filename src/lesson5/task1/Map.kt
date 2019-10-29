@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+
 /**
  * Пример
  *
@@ -230,7 +231,14 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    var i = 0
+    while (i < word.length) {
+        if (word[i] !in chars) return false
+        i += 1
+    }
+    return true
+}
 
 /**
  * Средняя
@@ -244,7 +252,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val answer = mutableMapOf<String, Int>()
+    for (key in list) {
+        if (key in answer) answer[key] = answer[key]!! + 1
+        else answer[key] = 1
+    }
+    return answer.filter { e -> e.value != 1 }
+}
 
 /**
  * Средняя
@@ -255,7 +270,18 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    val list = mutableSetOf<Map<Char, Int>>()
+    for (word in words) {
+        val count = mutableMapOf<Char, Int>()
+        for (letter in word) {
+            count[letter] = 1
+        }
+        if (list.contains(count)) return true
+        list.add(count)
+    }
+    return false
+}
 
 /**
  * Сложная
@@ -300,7 +326,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val map = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        if (list[i] in map) return map.put(list[i], -1)!!.toInt() to i
+        map[number - list[i]] = i
+    }
+    return -1 to -1
+
+}
 
 /**
  * Очень сложная
