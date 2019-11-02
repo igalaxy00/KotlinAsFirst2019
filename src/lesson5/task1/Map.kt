@@ -141,8 +141,9 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val answer = mutableSetOf<String>()
-    for (key in a) if (key in b) answer += key
+    val answer = mutableListOf<String>()
+    for (key in a)
+        if (key in b) answer += key
     return answer.toList()
 }
 
@@ -185,11 +186,11 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val answer = mutableMapOf<String, Double>()
-    val count = mutableMapOf<String, Double>()
+    val count = mutableMapOf<String, Int>()
     val sum = mutableMapOf<String, Double>()
     for ((key, value) in stockPrices) {
         sum[key] = (sum[key] ?: 0.0) + value
-        count[key] = (count[key] ?: 0.0) + 1.0
+        count[key] = (count[key] ?: 0) + 1
     }
     for ((key, value) in sum) answer[key] = value / count[key]!!
     return answer
@@ -255,7 +256,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val answer = mutableMapOf<String, Int>()
     for (key in list) {
-        if (key in answer) answer[key] = answer[key]!! + 1
+        if (key in answer) answer.getOrDefault(key, 0) + 1
         else answer[key] = 1
     }
     return answer.filter { e -> e.value != 1 }
@@ -329,7 +330,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val map = mutableMapOf<Int, Int>()
     for (i in list.indices) {
-        if (list[i] in map) return map.put(list[i], -1)!!.toInt() to i
+        if (list[i] in map) return map.getOrDefault(list[i], -1) to i
         map[number - list[i]] = i
     }
     return -1 to -1

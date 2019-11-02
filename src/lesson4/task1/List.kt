@@ -342,17 +342,17 @@ fun roman(n: Int): String {
         "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X",
         "IX", "V", "IV", "I"
     )
-    var result = ""
+    val result = StringBuilder()
     var m = n
     var i = 0
     while (i < arabicNumbers.size) {
         while (m >= arabicNumbers[i]) {
-            result += romanNumbers[i]
+            result.append(romanNumbers[i])
             m -= arabicNumbers[i]
         }
         i += 1
     }
-    return result
+    return result.toString()
 
 }
 

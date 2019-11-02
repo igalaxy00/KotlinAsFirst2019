@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+import jdk.nashorn.internal.runtime.JSType.isNumber
 import lesson2.task2.daysInMonth
 
 /**
@@ -80,13 +81,13 @@ fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull()
-    val month1: Int
+    val month: Int
     if (parts[1] in months) {
-        month1 = months.indexOf(parts[1])+1
+        month = months.indexOf(parts[1]) + 1
     } else return ""
     val year = parts[2].toIntOrNull()
-    if ( (year == null)|| (day == null) || (year < 0) || (day < 1) || (day > daysInMonth(month1, year))) return ""
-    return "%02d.%02d.%d".format(day, month1, year)
+    if ((year == null) || (day == null) || (year < 0) || (day < 1) || (day > daysInMonth(month, year))) return ""
+    return "%02d.%02d.%d".format(day, month, year)
 }
 
 /**
@@ -99,7 +100,23 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf(
+        "января", "февраля", "марта", "апреля",
+        "мая", "июня", "июля", "августа",
+        "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    val day = parts[0].toIntOrNull()
+    val year = parts[2].toIntOrNull()
+    val month = parts[1].toIntOrNull()
+    if ((day == null) || (year == null) || (month == null) || (month !in 1..12) || (day < 1)
+        || (year < 0) || (day > daysInMonth(month, year))
+    ) return ""
+    return "$day ${months[month - 1]} $year"
+
+}
 
 /**
  * Средняя
@@ -115,7 +132,15 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val legal = phone.contains(Regex("""^\+? *\d+ *(\( *\d+ *-* *\d*\))?( *\d*-*)*$"""))
+    if (!legal) return ""
+    val a = StringBuilder()
+    if (phone.first().toString() == "+") {
+        a.append("+")
+    }
+    return (a.append(phone.filter { it.toString() > "0" && it.toString() <= "9" })).toString()
+}
 
 /**
  * Средняя
@@ -127,7 +152,19 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val goodJumps = mutableListOf<Int>()
+    for (i in jumps) {
+        if (i != '-' && i != ' ' && i != '%' && !i.isDigit()) return -1
+    }
+    for (i in jumps.split(" ")) {
+        val x = i.toIntOrNull()
+        if (x != null) {
+            goodJumps.add(x)
+        }
+    }
+    return goodJumps.max() ?: -1
+}
 
 /**
  * Сложная
@@ -140,7 +177,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val goodJumps = mutableListOf<Int>()
+    for (i in jumps) {
+        if (i != '-' && i != ' ' && i != '%' && i != '+' && !i.isDigit()) return -1
+    }
+    val parts = jumps.split(' ')
+    for (i in 0 until parts.size / 2) {
+        if ("+" in parts[2 * i + 1])
+            goodJumps.add(parts[2 * i].toInt())
+    }
+    return goodJumps.max() ?: -1
+}
 
 /**
  * Сложная
@@ -151,7 +199,22 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var x = -1
+    val parts = expression.split(" ")
+    require(expression.matches(Regex("""(\d+ [+-] )*\d+""")))
+    var answer = 0
+    var y = "+"
+    for (i in parts) {
+        if (x == 1) y = i
+        if (x == -1) {
+            if (y == '+'.toString()) answer += i.toInt()
+            else answer -= i.toInt()
+        }
+        x *= -1
+    }
+    return answer
+}
 
 /**
  * Сложная
