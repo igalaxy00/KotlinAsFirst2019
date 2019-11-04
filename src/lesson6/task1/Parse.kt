@@ -80,13 +80,13 @@ fun dateStrToDigit(str: String): String {
     )
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    val day = parts[0].toIntOrNull()
+    val day = parts[0].toInt()
     val month: Int
     if (parts[1] in months) {
         month = months.indexOf(parts[1]) + 1
     } else return ""
-    val year = parts[2].toIntOrNull()
-    if ((year == null) || (day == null) || (year < 0) || (day < 1) || (day > daysInMonth(month, year))) return ""
+    val year = parts[2].toInt()
+    if (month !in 1..12 || daysInMonth(month, year) < day || !isNumber(parts[0]) || !isNumber(parts[2])) return ""
     return "%02d.%02d.%d".format(day, month, year)
 }
 
@@ -112,7 +112,7 @@ fun dateDigitToStr(digital: String): String {
     val year = parts[2].toIntOrNull()
     val month = parts[1].toIntOrNull()
     if ((day == null) || (year == null) || (month == null) || (month !in 1..12) || (day < 1)
-        || (year < 0)
+        || (year < 0) || (day > daysInMonth(month, year))
     ) return ""
     return "$day ${months[month - 1]} $year"
 
@@ -257,7 +257,6 @@ fun mostExpensive(description: String): String {
         if (parts.size != 2 || items.contains(";")) return ""
         val name = parts[0]
         val price = parts[1].toDouble()
-
         if (price > biggestprice) {
             biggestprice = price
             answer = name
