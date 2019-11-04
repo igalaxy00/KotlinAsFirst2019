@@ -80,16 +80,14 @@ fun dateStrToDigit(str: String): String {
     )
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    val day = parts[0].toInt()
+    val day = parts[0].toIntOrNull()
     val month: Int
     if (parts[1] in months) {
         month = months.indexOf(parts[1]) + 1
     } else return ""
-    val year = parts[2].toInt()
-    if (month !in 1..12 || daysInMonth(
-            month,
-            year
-        ) < day || !isNumber(parts[0].toInt()) || !isNumber(parts[2].toInt())
+    val year = parts[2].toIntOrNull()
+    if ((day == null) || (year == null) || (month !in 1..12) || (day < 1)
+        || (year < 0) || day > daysInMonth(month, year) || !isNumber(parts[0].toInt()) || !isNumber(parts[2].toInt())
     ) return ""
     return "%02d.%02d.%d".format(day, month, year)
 }
