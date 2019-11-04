@@ -264,6 +264,7 @@ fun mostExpensive(description: String): String {
             answer = name
         }
         if (biggestprice.toInt() == 0) return "Any good with price 0.0"
+        // Как должен получиться вывод "Any good with price 0.0" ??
     }
     return answer
 }
