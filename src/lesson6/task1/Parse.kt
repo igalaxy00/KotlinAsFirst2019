@@ -264,7 +264,7 @@ fun mostExpensive(description: String): String {
             answer = name
         }
         if (biggestprice.toInt() == 0) return "Any good with price 0.0"
-        // Как должен получиться вывод "Any good with price 0.0" ??
+        // Как должен получиться вывод "Any good with price 0.0" при входных "a 0" ?? И что это вообще значит?
     }
     return answer
 }
