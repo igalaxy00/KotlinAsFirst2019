@@ -317,15 +317,15 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val list1 = mutableListOf<Int>()
+    val answer = mutableListOf<Int>()
     val a = str.length
     var i = 0
     while (i < a) {
-        if (str[i].isDigit()) list1.add(str[i].toInt() - 48)
-        else list1.add((str[i]).toInt() - 87)
+        if (str[i].isDigit()) answer.add(str[i].toInt() - 48)
+        else answer.add((str[i]).toInt() - 87)
         i++
     }
-    return decimal(list1, base)
+    return decimal(answer, base)
 }
 
 /**
