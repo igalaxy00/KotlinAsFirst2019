@@ -140,13 +140,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val answer = mutableListOf<String>()
-    for (key in a)
-        if (key in b) answer += key
-    return answer.toList()
-}
-
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().intersect(b.toSet()).toList()
 
 /**
  * Средняя
@@ -235,7 +229,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     var i = 0
     while (i < word.length) {
-        if (word[i] !in chars) return false
+        if (word[i].toLowerCase() !in chars) return false
         i += 1
     }
     return true
@@ -255,11 +249,10 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val answer = mutableMapOf<String, Int>()
-    for (key in list) {
-        if (key in answer) answer.getOrDefault(key, 0) + 1
-        else answer[key] = 1
+    for (i in list) {
+        answer[i] = (answer[i] ?: 0) + 1
     }
-    return answer.filter { e -> e.value != 1 }
+    return answer.filter { it.value > 1 }
 }
 
 /**

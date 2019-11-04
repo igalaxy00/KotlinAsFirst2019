@@ -112,7 +112,7 @@ fun dateDigitToStr(digital: String): String {
     val year = parts[2].toIntOrNull()
     val month = parts[1].toIntOrNull()
     if ((day == null) || (year == null) || (month == null) || (month !in 1..12) || (day < 1)
-        || (year < 0) || (day > daysInMonth(month, year))
+        || (year < 0)
     ) return ""
     return "$day ${months[month - 1]} $year"
 
