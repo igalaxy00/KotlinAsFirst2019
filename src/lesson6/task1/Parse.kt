@@ -72,12 +72,18 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+/*fun dateCheck(day: Int, year: Int, month: Int): Boolean =
+    ((day == null) || (year == null) || (month !in 1..12) || (day < 1)
+            || (year < 0) || day > daysInMonth(month, year)
+            )
+*/
+val months = listOf(
+    "января", "февраля", "марта", "апреля",
+    "мая", "июня", "июля", "августа",
+    "сентября", "октября", "ноября", "декабря"
+)
+
 fun dateStrToDigit(str: String): String {
-    val months = listOf(
-        "января", "февраля", "марта", "апреля",
-        "мая", "июня", "июля", "августа",
-        "сентября", "октября", "ноября", "декабря"
-    )
     val parts = str.split(" ")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull()
@@ -87,8 +93,9 @@ fun dateStrToDigit(str: String): String {
     } else return ""
     val year = parts[2].toIntOrNull()
     if ((day == null) || (year == null) || (month !in 1..12) || (day < 1)
-        || (year < 0) || day > daysInMonth(month, year) || !isNumber(parts[0].toInt()) || !isNumber(parts[2].toInt())
-    ) return ""
+        || (year < 0) || day > daysInMonth(month, year)
+    )
+        return ""
     return "%02d.%02d.%d".format(day, month, year)
 }
 
@@ -103,11 +110,6 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val months = listOf(
-        "января", "февраля", "марта", "апреля",
-        "мая", "июня", "июля", "августа",
-        "сентября", "октября", "ноября", "декабря"
-    )
     val parts = digital.split(".")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull()
@@ -156,8 +158,9 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val goodJumps = mutableListOf<Int>()
+    val setSymbols = setOf('-', ' ', '%')
     for (i in jumps) {
-        if (i != '-' && i != ' ' && i != '%' && !i.isDigit()) return -1
+        if (i !in setSymbols && !i.isDigit()) return -1
     }
     for (i in jumps.split(" ")) {
         val x = i.toIntOrNull()
@@ -210,7 +213,7 @@ fun plusMinus(expression: String): Int {
     for (i in parts) {
         if (x == 1) y = i
         if (x == -1) {
-            if (y == '+'.toString()) answer += i.toInt()
+            if (y == "+") answer += i.toInt()
             else answer -= i.toInt()
         }
         x *= -1
@@ -253,17 +256,17 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val items = description.split("; ")
     var answer = ""
-    var biggestprice = 0.0
+    var biggestPrice = 0.0
     for (pair in items) {
         val parts = pair.split(" ")
-        if (parts.size != 2 || items.contains(";")) return ""
+        if (parts.size != 2) return ""
         val name = parts[0]
         val price = parts[1].toDouble()
-        if (price > biggestprice) {
-            biggestprice = price
+        if (price > biggestPrice) {
+            biggestPrice = price
             answer = name
         }
-        if (biggestprice.toInt() == 0) return "Any good with price 0.0"
+        if (biggestPrice.toInt() == 0) return "Any good with price 0.0"
         // Как должен получиться вывод "Any good with price 0.0" при входных "a 0" ?? И что это вообще значит?
     }
     return answer

@@ -186,7 +186,9 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
         sum[key] = (sum[key] ?: 0.0) + value
         count[key] = (count[key] ?: 0) + 1
     }
-    for ((key, value) in sum) answer[key] = value / count[key]!!
+    for ((key, value) in sum) {
+        answer[key] = value / count[key]!!
+    }
     return answer
 }
 
@@ -226,13 +228,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val symbols = chars.toSet()
-    for (i in word.toUpperCase()) {
-        if (!symbols.contains(i) && !symbols.contains(i.toLowerCase())) return false
-    }
-    return true
-}
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    word.toUpperCase().all { it in chars.map { i -> i.toUpperCase() } }
 
 /**
  * Средняя
@@ -254,6 +251,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
     }
     return answer.filter { it.value > 1 }
 }
+
 /**
  * Средняя
  *
@@ -264,14 +262,11 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val list = mutableSetOf<Map<Char, Int>>()
+    val anagrams = mutableSetOf<List<Char>>()
     for (word in words) {
-        val count = mutableMapOf<Char, Int>()
-        for (letter in word) {
-            count[letter] = 1
-        }
-        if (list.contains(count)) return true
-        list.add(count)
+        val sorted = word.toList().sorted()
+        if (sorted in anagrams) return true
+        anagrams += sorted
     }
     return false
 }
@@ -322,7 +317,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val map = mutableMapOf<Int, Int>()
     for (i in list.indices) {
-        if (list[i] in map) return map.getOrDefault(list[i], -1) to i
+        if (list[i] in map) return map.getOrDefault(list[i], -1) to i // если не писать getOrDefault то как раз таки котлин начинает бунтоваться . Ведь он предполагает что возможно будет не инт.
         map[number - list[i]] = i
     }
     return -1 to -1

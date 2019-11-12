@@ -317,15 +317,10 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val answer = mutableListOf<Int>()
-    val a = str.length
-    var i = 0
-    while (i < a) {
-        if (str[i].isDigit()) answer.add(str[i].toInt() - 48)
-        else answer.add((str[i]).toInt() - 87)
-        i++
-    }
-    return decimal(answer, base)
+    val list = mutableListOf<Int>()
+    for (i in str)
+        if (i.isDigit()) list.add(i - '0') else list.add(i - 'a' + 10)
+    return decimal(list, base)
 }
 
 /**
@@ -337,22 +332,30 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val arabicNumbers = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    val romanNumbers = listOf(
-        "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X",
-        "IX", "V", "IV", "I"
+    val numberMap = mapOf(
+        "M" to 1000,
+        "CM" to 900,
+        "D" to 500,
+        "CD" to 400,
+        "C" to 100,
+        "XC" to 90,
+        "L" to 50,
+        "XL" to 40,
+        "X" to 10,
+        "IX" to 9,
+        "V" to 5,
+        "IV" to 4,
+        "I" to 1
     )
-    val result = StringBuilder()
-    var m = n
-    var i = 0
-    while (i < arabicNumbers.size) {
-        while (m >= arabicNumbers[i]) {
-            result.append(romanNumbers[i])
-            m -= arabicNumbers[i]
+    var arab = n
+    val answer = mutableListOf<String>()
+    for ((key, value) in numberMap) {
+        while (arab / value > 0) {
+            answer.add(key)
+            arab -= value
         }
-        i += 1
     }
-    return result.toString()
+    return answer.joinToString(separator = "")
 
 }
 
