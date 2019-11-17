@@ -184,8 +184,9 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     val goodJumps = mutableListOf<Int>()
+    val setSymbols = setOf('-', ' ', '%', '+')
     for (i in jumps) {
-        if (i != '-' && i != ' ' && i != '%' && i != '+' && !i.isDigit()) return -1
+        if (i !in setSymbols && !i.isDigit()) return -1
     }
     val parts = jumps.split(' ')
     for (i in 0 until parts.size / 2) {
@@ -266,8 +267,6 @@ fun mostExpensive(description: String): String {
             biggestPrice = price
             answer = name
         }
-        if (biggestPrice.toInt() == 0) return "Any good with price 0.0"
-        // Как должен получиться вывод "Any good with price 0.0" при входных "a 0" ?? И что это вообще значит?
     }
     return answer
 }
@@ -283,7 +282,46 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    if (roman.isEmpty()) return -1
+    if (!roman.matches(Regex("""M*(CM|DC{0,3}|CD|C{0,3})?(XC|LX{0,3}|XL|X{0,3})?(IX|VI{0,3}|IV|I{0,3})?"""))) {
+        return -1
+    }
+    var result = 0
+    var previewNum = Int.MAX_VALUE
+    var firstIndex = 0
+    var lastIndex = 0
+    val numberMap = mapOf(
+        "M" to 1000,
+        "CM" to 900,
+        "D" to 500,
+        "CD" to 400,
+        "C" to 100,
+        "XC" to 90,
+        "L" to 50,
+        "XL" to 40,
+        "X" to 10,
+        "IX" to 9,
+        "V" to 5,
+        "IV" to 4,
+        "I" to 1
+    )
+    while (roman.length > firstIndex) {
+        var k = false
+        while (roman.substring(firstIndex, lastIndex + 1) in numberMap) {
+            lastIndex++
+            k = true
+            if (roman.length == lastIndex) break
+        }
+        if (!k) return -1
+        val new = numberMap.getOrDefault(roman.substring(firstIndex, lastIndex), 0)
+        if (new > previewNum) return -1
+        firstIndex = lastIndex
+        previewNum = new
+        result += new
+    }
+    return result
+}
 
 /**
  * Очень сложная

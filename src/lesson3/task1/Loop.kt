@@ -313,7 +313,7 @@ fun squareSequenceDigit(n: Int): Int {
     var b = 0
     var c: Int
     while (count != n) {
-        b ++
+        b++
         c = sqr(b)
         for (i in 1..digitNumber(c)) {
             a = Digit(c, i)
@@ -342,7 +342,7 @@ fun fibSequenceDigit(n: Int): Int {
         b++
         c = fib(b)
         for (k in 1..digitNumber(c)) {
-            a = Digit(c,k)
+            a = Digit(c, k)
             i++
             if (c == n) break
         }
