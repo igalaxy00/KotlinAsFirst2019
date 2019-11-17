@@ -305,7 +305,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun Digit(k: Int, number: Int): Double = number / 10.0.pow(digitNumber(number) - k) % 10
+fun digit(k: Int, number: Int): Double = number / 10.0.pow(digitNumber(number) - k) % 10
 
 fun squareSequenceDigit(n: Int): Int {
     var count = 0
@@ -316,7 +316,7 @@ fun squareSequenceDigit(n: Int): Int {
         b++
         c = sqr(b)
         for (i in 1..digitNumber(c)) {
-            a = Digit(c, i)
+            a = digit(c, i)
             count++
             if (i == n) break
         }
@@ -342,7 +342,7 @@ fun fibSequenceDigit(n: Int): Int {
         b++
         c = fib(b)
         for (k in 1..digitNumber(c)) {
-            a = Digit(c, k)
+            a = digit(c, k)
             i++
             if (c == n) break
         }

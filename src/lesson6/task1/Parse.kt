@@ -1,8 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
-
-import jdk.nashorn.internal.runtime.JSType.isNumber
 import lesson2.task2.daysInMonth
 
 /**
