@@ -72,11 +72,11 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-/*fun dateCheck(day: Int, year: Int, month: Int): Boolean =
-    ((day == null) || (year == null) || (month !in 1..12) || (day < 1)
-            || (year < 0) || day > daysInMonth(month, year)
+fun dateCheck(day: String, year: String, month: String): Boolean =
+    ((day.toIntOrNull() == null) || (year.toIntOrNull() == null) || (month.toIntOrNull() == null) || (month.toInt() !in 1..12) || (day.toInt() < 1)
+            || (year.toInt() < 0) || day.toInt() > daysInMonth(month.toInt(), year.toInt())
             )
-*/
+
 val months = listOf(
     "января", "февраля", "марта", "апреля",
     "мая", "июня", "июля", "августа",
@@ -92,9 +92,7 @@ fun dateStrToDigit(str: String): String {
         month = months.indexOf(parts[1]) + 1
     } else return ""
     val year = parts[2].toIntOrNull()
-    if ((day == null) || (year == null) || (month !in 1..12) || (day < 1)
-        || (year < 0) || day > daysInMonth(month, year)
-    )
+    if (dateCheck(day.toString(), year.toString(), month.toString()))
         return ""
     return "%02d.%02d.%d".format(day, month, year)
 }
@@ -115,10 +113,9 @@ fun dateDigitToStr(digital: String): String {
     val day = parts[0].toIntOrNull()
     val year = parts[2].toIntOrNull()
     val month = parts[1].toIntOrNull()
-    if ((day == null) || (year == null) || (month == null) || (month !in 1..12) || (day < 1)
-        || (year < 0) || (day > daysInMonth(month, year))
-    ) return ""
-    return "$day ${months[month - 1]} $year"
+    if (dateCheck(day.toString(), year.toString(), month.toString()))
+        return ""
+    return "$day ${months[month!! - 1]} $year"
 
 }
 
@@ -262,11 +259,13 @@ fun mostExpensive(description: String): String {
         val parts = pair.split(" ")
         if (parts.size != 2) return ""
         val name = parts[0]
-        val price = parts[1].toDouble()
-        if (price > biggestPrice) {
-            biggestPrice = price
-            answer = name
-        }
+        val price = parts[1].toDoubleOrNull()
+        if (price != null) {
+            if (price > biggestPrice) {
+                biggestPrice = price
+                answer = name
+            }
+        } else return ""
     }
     return answer
 }
