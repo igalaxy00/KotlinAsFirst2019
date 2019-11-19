@@ -318,7 +318,7 @@ fun squareSequenceDigit(n: Int): Int {
         for (i in 1..digitNumber(c)) {
             a = digit(c, i)
             count++
-            if (i == n) break
+            if (count == n) break
         }
     }
     return a.toInt()
