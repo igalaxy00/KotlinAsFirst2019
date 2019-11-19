@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
+
 import lesson2.task2.daysInMonth
 
 /**
@@ -187,6 +188,7 @@ fun bestHighJump(jumps: String): Int {
     for (i in 0 until parts.size / 2) {
         if ("+" in parts[2 * i + 1])
             goodJumps.add(parts[2 * i].toInt())
+        if (parts[2 * i].toIntOrNull() == null) return -1
     }
     return goodJumps.max() ?: -1
 }
@@ -252,7 +254,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val items = description.split("; ")
     var answer = ""
-    var biggestPrice = 0.0
+    var biggestPrice = -1.0
     for (pair in items) {
         val parts = pair.split(" ")
         if (parts.size != 2) return ""
