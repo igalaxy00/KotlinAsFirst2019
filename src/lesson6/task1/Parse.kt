@@ -139,7 +139,7 @@ fun flattenPhoneNumber(phone: String): String {
     if (phone.first().toString() == "+") {
         a.append("+")
     }
-    return (a.append(phone.filter { it.toString() > "0" && it.toString() <= "9" })).toString()
+    return (a.append(phone.filter { it.toString() >= "0" && it.toString() <= "9" })).toString()
 }
 
 /**
