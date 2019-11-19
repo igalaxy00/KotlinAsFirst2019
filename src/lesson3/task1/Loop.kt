@@ -344,7 +344,7 @@ fun fibSequenceDigit(n: Int): Int {
         for (k in 1..digitNumber(c)) {
             a = digit(c, k)
             i++
-            if (c == n) break
+            if (i == n) break
         }
 
     }
