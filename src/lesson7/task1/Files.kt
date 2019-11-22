@@ -162,12 +162,42 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines()
+    val txt = StringBuilder()
+    val spaceLess = mutableListOf<String>()
+    var spaceCount = 0
+    for (i in lines) {
+        spaceCount = max(spaceCount, i.trim().length)
+        spaceLess.add(i.trim().replace(Regex("\\s+"), " "))
+    }
+    for (i in spaceLess) {
+
+
+        val difference = spaceCount - i.length
+        val countWords = i.split(" ")
+        if (countWords.size == 1) {
+            txt.append(countWords[0]).append("\n")
+            continue
+        }
+        if (i == "\n" || i.isEmpty()) {
+            txt.append("\n")
+            continue
+        }
+        val minSpace = difference / (countWords.size - 1)
+        var spaces = difference - (minSpace * (countWords.size - 1))
+        for (words in 0 until countWords.size - 1) {
+            if (spaces > 0) {
+                txt.append(countWords[words] + " ".repeat(minSpace + 2))
+                spaces--
+            } else {
+                txt.append(countWords[words] + " ".repeat(minSpace + 1))
+            }
+        }
+        txt.append(countWords.last())
+        txt.append("\n")
+    }
+    File(outputName).writeText(txt.toString())
 }
-    //val lines = File(inputName).readLines()
-    //val txt = StringBuilder()
-   // val spaceLess = mutableListOf<String>()
-   // var spaceCount = 0
 
 
 /**
