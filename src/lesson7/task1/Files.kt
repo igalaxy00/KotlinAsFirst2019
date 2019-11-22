@@ -55,7 +55,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val text = inputName.toLowerCase()
+    val text = File(inputName).readText().toLowerCase()
     val setOfStrings = substrings.toSet()
     val answer = mutableMapOf<String, Int>()
     for (i in setOfStrings) answer[i] = 0
@@ -164,6 +164,11 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     TODO()
 }
+//  val lines = File(inputName).readLines()
+//  val txt = StringBuilder()
+//  val spaceLess = mutableListOf<String>()
+//   var spaceCount = 0
+
 
 /**
  * Средняя
