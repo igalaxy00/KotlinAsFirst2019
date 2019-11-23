@@ -190,11 +190,11 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                 txt.append(countWords[words] + " ".repeat(minSpace + 2))
                 spaces--
             } else {
-                txt.append(countWords[words] + " ".repeat(minSpace + 1))
+                txt.append(countWords[words] + "  ".repeat(minSpace + 1))
             }
         }
         txt.append(countWords.last())
-        txt.append("\n")
+
     }
     File(outputName).writeText(txt.toString())
 }
@@ -332,9 +332,67 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+/*fun tagClose(tagName: MutableList<Int>, textBuilder: StringBuilder, k: Int, charI: Int) {
+    if (tagName[0] == 0) {
+        tagName[0]++
+    } else {
+        textBuilder.insert(k + charI, '/')
+        tagName[0]--
+        k += 1
+    }
 }
+*/
+fun markdownToHtmlSimple(inputName: String, outputName: String) {
+    val lines = File(inputName).readLines()
+    val txt = StringBuilder()
+    var k = 1
+    val italics = mutableListOf(0)
+    val halfFat = mutableListOf(0)
+    val crossOut = mutableListOf(0)
+    txt.append("<html>", "<body>")
+    for (line in lines) {
+        var editLine = line.replace("**", "<b>")
+        editLine = editLine.replace("~~", "<s>").replace("*", "<i>")
+        val textBuilder = StringBuilder().append(editLine)
+        val tag = mutableListOf(' ', ' ', ' ')
+        for (charI in 0 until editLine.length - 2) {
+            tag[0] = editLine[charI]
+            tag[1] = editLine[charI + 1]
+            tag[2] = editLine[charI + 2]
+            if (tag[2] == '>' && tag[0] == '<') {
+                when (tag[1]) {
+                    'i' -> if (italics[0] == 0) {
+                        italics[0]++
+                    } else {
+                        textBuilder.insert(k + charI, '/')
+                        italics[0]--
+                        k += 1
+                    }
+                    's' -> if (crossOut[0] == 0) {
+                        crossOut[0]++
+                    } else {
+                        textBuilder.insert(k + charI, '/')
+                        crossOut[0]--
+                        k += 1
+                    }
+                    'b' -> if (halfFat[0] == 0) {
+                        halfFat[0]++
+                    } else {
+                        textBuilder.insert(k + charI, '/')
+                        halfFat[0]--
+                        k += 1
+                    }
+                }
+            }
+        }
+        k = 1
+        txt.append(textBuilder)
+}
+if ((lines.size == 1 && lines[0].isEmpty()) && lines.isEmpty()) txt.append("<p></p>")
+txt.append("</body>", "</html>")
+File(outputName).writeText(txt.toString())
+}
+
 
 /**
  * Сложная
