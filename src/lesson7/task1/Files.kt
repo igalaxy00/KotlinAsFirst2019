@@ -171,8 +171,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         spaceLess.add(i.trim().replace(Regex("\\s+"), " "))
     }
     for (i in spaceLess) {
-
-
         val difference = spaceCount - i.length
         val countWords = i.split(" ")
         if (countWords.size == 1) {
@@ -345,7 +343,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val lines = File(inputName).readLines()
     val txt = StringBuilder()
-
+    var closed = 1
     var k = 1
     val italics = mutableListOf(0)
     val halfFat = mutableListOf(0)
