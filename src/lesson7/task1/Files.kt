@@ -194,7 +194,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             }
         }
         txt.append(countWords.last())
-
+        txt.append("\n")
     }
     File(outputName).writeText(txt.toString())
 }
@@ -346,11 +346,16 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val lines = File(inputName).readLines()
     val txt = StringBuilder()
     var k = 1
+    var closed = 1
     val italics = mutableListOf(0)
     val halfFat = mutableListOf(0)
     val crossOut = mutableListOf(0)
     txt.append("<html>", "<body>")
     for (line in lines) {
+        if (line.isNotEmpty() && closed == 1) {
+            txt.append("<p>")
+            closed = 0
+        }
         var editLine = line.replace("**", "<b>")
         editLine = editLine.replace("~~", "<s>").replace("*", "<i>")
         val textBuilder = StringBuilder().append(editLine)
@@ -387,10 +392,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
         k = 1
         txt.append(textBuilder)
-}
-if ((lines.size == 1 && lines[0].isEmpty()) && lines.isEmpty()) txt.append("<p></p>")
-txt.append("</body>", "</html>")
-File(outputName).writeText(txt.toString())
+    }
+    if ((lines.size == 1 && lines[0].isEmpty()) && lines.isEmpty()) txt.append("<p></p>")
+    txt.append("</body>", "</html>")
+    File(outputName).writeText(txt.toString())
 }
 
 
