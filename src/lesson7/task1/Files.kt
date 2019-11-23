@@ -190,7 +190,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                 txt.append(countWords[words] + " ".repeat(minSpace + 2))
                 spaces--
             } else {
-                txt.append(countWords[words] + "  ".repeat(minSpace + 1))
+                txt.append(countWords[words] + " ".repeat(minSpace + 1))
             }
         }
         txt.append(countWords.last())
