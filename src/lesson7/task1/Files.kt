@@ -350,50 +350,54 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val crossOut = mutableListOf(0)
     txt.append("<html>", "<body>")
     for (line in lines) {
-        if (line.isNotEmpty() && closed == 1) {
-            txt.append("<p>")
-            closed = 0
-        }
-        var editLine = line.replace("**", "<b>")
-        editLine = editLine.replace("~~", "<s>").replace("*", "<i>")
-        val textBuilder = StringBuilder().append(editLine)
-        val tag = mutableListOf(' ', ' ', ' ')
-        for (charI in 0 until editLine.length - 2) {
-            tag[0] = editLine[charI]
-            tag[1] = editLine[charI + 1]
-            tag[2] = editLine[charI + 2]
-            if (tag[2] == '>' && tag[0] == '<') {
-                when (tag[1]) {
-                    'i' -> if (italics[0] == 0) {
-                        italics[0]++
-                    } else {
-                        textBuilder.insert(k + charI, '/')
-                        italics[0]--
-                        k += 1
-                    }
-                    's' -> if (crossOut[0] == 0) {
-                        crossOut[0]++
-                    } else {
-                        textBuilder.insert(k + charI, '/')
-                        crossOut[0]--
-                        k += 1
-                    }
-                    'b' -> if (halfFat[0] == 0) {
-                        halfFat[0]++
-                    } else {
-                        textBuilder.insert(k + charI, '/')
-                        halfFat[0]--
-                        k += 1
+        if (line.isNotEmpty()) {
+            if (closed == 1) {
+                txt.append("<p>")
+                closed = 0
+            }
+            var editLine = line.replace("**", "<b>")
+            editLine = editLine.replace("~~", "<s>").replace("*", "<i>")
+            val textBuilder = StringBuilder().append(editLine)
+            val tag = mutableListOf(' ', ' ', ' ')
+            for (charI in 0 until editLine.length - 2) {
+                tag[0] = editLine[charI]
+                tag[1] = editLine[charI + 1]
+                tag[2] = editLine[charI + 2]
+                if (tag[2] == '>' && tag[0] == '<') {
+                    when (tag[1]) {
+                        'i' -> if (italics[0] == 0) {
+                            italics[0]++
+                        } else {
+                            textBuilder.insert(k + charI, '/')
+                            italics[0]--
+                            k += 1
+                        }
+                        's' -> if (crossOut[0] == 0) {
+                            crossOut[0]++
+                        } else {
+                            textBuilder.insert(k + charI, '/')
+                            crossOut[0]--
+                            k += 1
+                        }
+                        'b' -> if (halfFat[0] == 0) {
+                            halfFat[0]++
+                        } else {
+                            textBuilder.insert(k + charI, '/')
+                            halfFat[0]--
+                            k += 1
+                        }
                     }
                 }
             }
+            k = 1
+            txt.append(textBuilder)
+        } else {
+            txt.append("</p>")
+            closed = 1
         }
-        k = 1
-        txt.append(textBuilder)
     }
     if ((lines.size == 1 && lines[0].isEmpty()) && lines.isEmpty()) txt.append("<p></p>")
-
-    txt.append("</body>", "</html>")
+    if (closed == 0) txt.append("</p>")
     File(outputName).writeText(txt.toString())
 }
 
