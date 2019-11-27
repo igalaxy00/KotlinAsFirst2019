@@ -72,7 +72,8 @@ fun main() {
  * входными данными.
  */
 fun dateCheck(day: String, year: String, month: String): Boolean =
-    ((day.toIntOrNull() == null) || (year.toIntOrNull() == null) || (month.toIntOrNull() == null) || (month.toInt() !in 1..12) || (day.toInt() < 1)
+    ((day.toIntOrNull() == null) || (year.toIntOrNull() == null) || (month.toIntOrNull() == null) ||
+            (month.toInt() !in 1..12) || (day.toInt() < 1)
             || (year.toInt() < 0) || day.toInt() > daysInMonth(month.toInt(), year.toInt())
             )
 
