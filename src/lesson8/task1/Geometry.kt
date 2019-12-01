@@ -132,7 +132,7 @@ fun diameter(vararg points: Point): Segment {
  */
 fun circleByDiameter(diameter: Segment): Circle {
     return Circle(
-        Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 3),
+        Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2),
         sqrt(sqr(diameter.begin.x - diameter.end.x) + sqr(diameter.begin.y - diameter.end.y)) / 2
     )
 }
@@ -160,8 +160,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         val y: Double
         val x =
             (other.b * cos(angle) - b * cos(other.angle)) / (sin(angle) * cos(other.angle) - cos(angle) * sin(other.angle))
-        y = if (angle == Math.PI / 2)
-            (x * sin(other.angle) + other.b) / cos(other.angle)
+        y = if (angle == Math.PI / 2) (x * sin(other.angle) + other.b) / cos(other.angle)
         else (x * sin(angle) + b) / cos(angle)
         return Point(x, y)
     }
@@ -183,7 +182,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line =
-    Line(s.begin, (2 * PI + (atan((s.end.y - s.begin.y) * (s.end.x - s.begin.x)))) % PI)
+    Line(s.begin, (2 * PI + (atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))) % PI)
 
 /**
  * Средняя
