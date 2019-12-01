@@ -209,9 +209,9 @@ fun bisectorByPoints(a: Point, b: Point): Line =
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     require(circles.size >= 2)
     var min = Double.MAX_VALUE
-    var answer = Pair(0, 0)
+    var answer = Pair(-1, -1)
     for (i in 0 until circles.size - 1) {
-        for (k in i + 1 until circles.size - 1) {
+        for (k in i + 1 until circles.size) {
             val dist = circles[i].distance(circles[k])
             if (min == Double.MAX_VALUE || dist < min) {
                 min = dist
