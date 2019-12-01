@@ -3,10 +3,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -162,7 +159,7 @@ class Line private constructor(val b: Double, val angle: Double) {
     fun crossPoint(other: Line): Point {
         val y: Double
         val x =
-            (other.b * cos(angle) - cos(other.angle)) / (sin(angle) * cos(other.angle) - cos(angle) * sin(other.angle))
+            (other.b * cos(angle) - b / cos(other.angle)) / (sin(angle) * cos(other.angle) - cos(angle) * sin(other.angle))
         y = if (angle == Math.PI / 2)
             (x * sin(other.angle) + other.b) / cos(other.angle)
         else (x * sin(angle) + b) / cos(angle)
@@ -185,14 +182,15 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line =
+    Line(s.begin, (2 * PI + (atan((s.end.y - s.end.y) / (s.end.x - s.begin.x)))) % PI)
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
 /**
  * Сложная
