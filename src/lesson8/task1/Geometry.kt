@@ -89,7 +89,7 @@ data class Circle(val center: Point, val radius: Double) {
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = p.distance(center) <= radius
 }
 
 /**
@@ -109,7 +109,23 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    require(points.size > 1)
+    var answer = 100.0
+    var point1 = Point(0.0, 0.0)
+    var point2 = Point(0.0, 0.0)
+    for (i in 0 until points.size - 1) {
+        for (k in 1 + i until points.size - 1) {
+            val length = sqrt(sqr(points[k].x - points[i].x) + sqr(points[k].y - points[i].y))
+            if (length > answer) {
+                point1 = Point(points[i].x, points[i].y)
+                point2 = Point(points[k].x, points[k].y)
+                answer = length
+            }
+        }
+    }
+    return Segment(point1, point2)
+}
 
 /**
  * Простая
