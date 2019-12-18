@@ -105,4 +105,15 @@ class Tests {
         assertEquals(874, numberRevert(478))
         assertEquals(201, numberRevert(102))
     }
+
+    @Test
+    @Tag("Easy")
+    fun DrVgodu() {
+        assertEquals(31, DrVgodu("леша 23 февраля"))
+    }
+    @Test
+    @Tag("Easy")
+    fun CvetKod() {
+        assertEquals(31, CvetKod(listOf("имя с0с0с0", "имя2 с0с0с0", "тор с0с0с1")))
+    }
 }

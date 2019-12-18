@@ -58,7 +58,8 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val txt = File(inputName).readText().toLowerCase()
     val setOfStrings = substrings.toSet()
     val answer = mutableMapOf<String, Int>()
-    for (i in setOfStrings) answer[i] = 0
+    for (i in setOfStrings)
+        answer[i] = 0
     for (k in setOfStrings) {
         answer[k] = txt.windowed(k.length) { if (it == k.toLowerCase()) 1 else 0 }.sum()
     }
@@ -88,7 +89,7 @@ fun sibilants(inputName: String, outputName: String) {
         'ю' to 'у',
         'Ю' to 'У'
     )
-    val goodSymbols = listOf<String>("Ч", "Ж", "Ш", "Щ", "ч", "ж", "ш", "щ")
+    val goodSymbols = listOf('Ч', 'Ж', 'Ш', 'Щ', 'ч', 'ж', 'ш', 'щ')
     var k = false
     File(outputName).bufferedWriter().use {
         for (i in File(inputName).readText()) {
@@ -97,7 +98,7 @@ fun sibilants(inputName: String, outputName: String) {
                 false
             } else {
                 it.write(i.toString())
-                i.toString() in goodSymbols
+                i in goodSymbols
             }
         }
     }
@@ -129,8 +130,10 @@ fun centerFile(inputName: String, outputName: String) {
         spaceLess.add(i.trim())
         spaceCount = max(i.trim().length, spaceCount)
     }
-    for (i in spaceLess)
-        halfAnswer.append(" ".repeat((spaceCount - i.length) / 2) + i + '\n')
+    for (i in spaceLess) {
+        halfAnswer.append(" ".repeat((spaceCount - i.length) / 2) + i)
+        halfAnswer.appendln()
+    }
     File(outputName).writeText(halfAnswer.toString())
 }
 

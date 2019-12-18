@@ -2,7 +2,6 @@
 
 package lesson1.task1
 
-import java.lang.Math.pow
 import kotlin.math.*
 
 /**
@@ -128,4 +127,57 @@ fun numberRevert(number: Int): Int {
     val second = number / 10 % 10
     val third = number / 100 % 10
     return first * 100 + second * 10 + third
+}
+
+fun DrVgodu(information: String): Int {
+    val good = mapOf(
+        "январь" to 9,
+        "февраля" to 29,
+        "март" to 9,
+        "апрель" to 4,
+        "май" to 4,
+        "июнь" to 4,
+        "июль" to 4,
+        "август" to 4,
+        "сентябрь" to 4,
+        "октябрь" to 4,
+        "ноябрь" to 4,
+        "декабрь" to 4
+    )
+    val answer = mutableListOf<String>()
+    val text = Regex("""\s+""").replace(information, " ")
+    require(Regex("""[а-яА-ЯёЁ]+ \d\d [а-яА-ЯёЁ]+""").matches(text))
+    val parts = text.split(", ")
+    for (i in parts) {
+        val salary = i.split(" ")
+        if (salary[1].toInt() < good[salary[2]]!!)
+            answer.add(i)
+    }
+    return 31
+}
+
+fun CvetKod(people: List<String>): Int {
+    val mapOfColours = mutableMapOf<String, Int>()
+    val answer = mutableListOf<String>()
+    for (i in people) {
+        require(Regex("""[а-яА-ЯёЁ]+ ([a-fA-F]|[0-9]){6}""").matches(i))
+        val splitted = i.split(Regex("""\s+"""))
+        if (splitted[1] in mapOfColours) mapOfColours[splitted[1]] = mapOfColours[splitted[1]]!! + 1
+        else mapOfColours[splitted[1]] = 1
+    }
+    for ((key, value) in mapOfColours) {
+        if (value == 1) {
+            for (i in people) {
+                val splitted = i.split(Regex("""\s+"""))
+                if (splitted[1] == key) {
+                    val x = splitted[0]
+                    val y = splitted[1]
+                    answer.add("$x -> $y")
+                    print (answer)
+                }
+            }
+        }
+
+    }
+    return 31
 }

@@ -113,7 +113,7 @@ fun diameter(vararg points: Point): Segment {
     var point2 = Point(0.0, 0.0)
     for (i in 0 until points.size - 1) {
         for (k in 1 + i until points.size) {
-            val length = sqrt(sqr(points[k].x - points[i].x) + sqr(points[k].y - points[i].y))
+            val length = points[k].distance(points[i])
             if (length > answer) {
                 point1 = Point(points[i].x, points[i].y)
                 point2 = Point(points[k].x, points[k].y)
@@ -231,7 +231,11 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle{
+    val circleCenter = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, a))
+    val circleRadius = circleCenter.distance(a)
+    return Circle(circleCenter, circleRadius)
+}
 
 /**
  * Очень сложная
