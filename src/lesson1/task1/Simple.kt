@@ -2,6 +2,7 @@
 
 package lesson1.task1
 
+import java.lang.IllegalArgumentException
 import kotlin.math.*
 
 /**
@@ -129,6 +130,7 @@ fun numberRevert(number: Int): Int {
     return first * 100 + second * 10 + third
 }
 
+//др в году
 fun DrVgodu(information: String): Int {
     val good = mapOf(
         "январь" to 9,
@@ -156,6 +158,7 @@ fun DrVgodu(information: String): Int {
     return 31
 }
 
+// цвет волосо 16число
 fun CvetKod(people: List<String>): Int {
     val mapOfColours = mutableMapOf<String, Int>()
     val answer = mutableListOf<String>()
@@ -173,11 +176,179 @@ fun CvetKod(people: List<String>): Int {
                     val x = splitted[0]
                     val y = splitted[1]
                     answer.add("$x -> $y")
-                    print (answer)
+                    print(answer)
                 }
             }
         }
 
     }
     return 31
+}
+
+// компеклекные числа
+class ComplexNumber(stringSequence: String) {
+    private var a = (Regex("""\d+[^i\d]|\d+$""").find(stringSequence)?.value ?: "0").trim()
+    private var b = (Regex("""(([+\-]) )?\d*+i""").find(stringSequence)?.value ?: "0").filter { it !in "i " }
+    fun complexToInt(): Pair<Int, Int> {
+        return when (b) {
+            "+", "" -> a.toInt() to 1
+            "-" -> a.toInt() to -1
+            else -> a.toInt() to b.toInt()
+        }
+    }
+}
+
+fun ComplexMultyply(sequence: String): Pair<Int, Int> {
+    val multipliers = sequence.split(";")
+    var answer = ComplexNumber(multipliers[0]).complexToInt()
+    for (i in 1..multipliers.lastIndex) {
+        val a = answer.first
+        val b = answer.second
+        val c = ComplexNumber(multipliers[i]).complexToInt().first
+        val d = ComplexNumber(multipliers[i]).complexToInt().second
+        answer = a * c - b * d to a * d + b * c
+    }
+    return answer
+}
+
+//spam
+fun Spam(str: String): Set<String> {
+    val legal = "$str\n".contains(Regex("""^(\w+ \d\d?:\d\d\n)+$"""))
+    if (!legal) {
+        return setOf()
+    }
+    val chatters = str.split("\n")
+    val listChat = chatters.map { it.split(" ")[0] to it.split(" ")[1] }
+    val mapchat = mutableMapOf<String, List<Int>>()
+    for ((name, second) in listChat) {
+        val time = second.split(":")
+        val hours = time[0].toInt()
+        val minutes = time[1].toInt()
+        if (hours > 23)
+            return setOf()
+        if (minutes > 60)
+            return setOf()
+        mapchat[name] = mapchat.getOrDefault(name, listOf()) + hours * 60 + minutes
+    }
+    val sortmap = mapchat.map { it.key to it.value.sorted() }
+    val answer = mutableSetOf<String>()
+    for ((name, timelist) in sortmap) {
+        for (i in 0 until timelist.size - 1) {
+            if (timelist[i + 1] - timelist[i] < 2) {
+                answer += name
+                break
+            }
+        }
+    }
+    return answer
+}
+
+//цыета волос человек цвет цвет цвет
+fun myFun(people: List<String>): MutableSet<String> {
+    val splittedPeople = people.map { val b = it.split(':'); b[0].trim(' ') to b[1].trim(' ').split(", ").toSet() }
+    val answer = mutableSetOf<String>()
+    for ((personName, personColors) in splittedPeople) {
+        var allChecked = true
+        for ((name, colors) in splittedPeople) {
+            if (personColors == colors && personName != name) {
+                allChecked = false
+                break
+            }
+        }
+        if (allChecked) answer.add("${personColors.joinToString()} -> $personName")
+    }
+    return answer
+}
+
+// биграммы
+fun bigrams(text: String): Map<String, Int> {
+    val answer = mutableMapOf<String, Int>()
+    var filtered = Regex("""[.,-;?!()"]""").replace(text, " ")
+    filtered = Regex("""\s+""").replace(filtered, " ")
+    val wordlist = filtered.split(" ")
+    for (word in wordlist) {
+        val bigram = word.windowed(2, 1, false)
+        for (bi in bigram) {
+            answer[bi] = (answer[bi] ?: 0) + 1
+        }
+    }
+    return answer
+}
+
+// телефоны иванов иван
+fun telephones(name: String, text: String): MutableSet<String> {
+    val answer = mutableSetOf<String>()
+    for (entry in text.split(";\\s+".toRegex())) {
+        val namePhone = entry.split(" +")
+        if (namePhone.size != 2 || namePhone[1].contains("[^-0-9]".toRegex()))
+            throw IllegalArgumentException()
+        if (namePhone[0].trim(' ') == name)
+            answer.add(" " + namePhone[1])
+    }
+    return answer
+}
+
+// поезда из а в б кирилл
+fun train(from: String, to: String, route: String): String {
+    val lCell = route.split(";")
+    var timeS = ""
+    var timeF = ""
+    for (cell in lCell) {
+        if (Regex(""" +.* +(\d\d):(\d\d)""").matches(cell)) {
+            val data = cell.split(Regex(""" +"""))
+            if (data[1] == from)
+                timeS = data[2]
+            if (data[1] == to)
+                timeF = data[2]
+        } else throw IllegalArgumentException()
+    }
+    require(!(timeS == "" || timeF == ""))
+    val hours = timeF.split(";")[0].toInt() - timeS.split(";")[0].toInt()
+    val minutes = timeF.split(";")[1].toInt() - timeS.split(";")[1].toInt()
+    val time = hours * 60 + minutes
+    return String.format("%02d:%02d", time / 60, time % 60)
+}
+
+//монетки разменять
+fun money(sum: Double, coins: String): Collection<Any> {
+    require(Regex("""([\d]+(\.\d\d*)*)(, [\d]+(\.\d\d*)*)*""").matches(coins))
+    val sortedCoinList = coins.split(", ").sorted().reversed()
+    var aux = sum
+    var i = 0
+    val answer = mutableListOf<String>()
+    for (number in sortedCoinList) {
+        while (aux / number.toDouble() > 1) {
+            i++
+            aux -= number.toDouble()
+        }
+        answer += "$i*$number"
+        i = 0
+    }
+    return answer
+}
+
+//телефон старый
+fun phoneNumber(text: String): String {
+    val replacement = mapOf(
+        listOf('a', 'b', 'c') to '2',
+        listOf('d', 'e', 'f') to '3',
+        listOf('g', 'h', 'i') to '4',
+        listOf('j', 'k', 'l') to '5',
+        listOf('m', 'n', 'o') to '6',
+        listOf('p', 'q', 'r', 's') to '7',
+        listOf('t', 'u', 'v') to '8',
+        listOf('w', 'x', 'y', 'z') to '9'
+    )
+    require(Regex("""[\d\s-a-zA-Z]*[\da-zA-Z]+[\d\s-a-zA-Z]*""").matches(text))
+    Regex("""\s+""").replace(text,"")
+    var answer = text
+    for (i in answer.indices) {
+        for ((letters, digit) in replacement) {
+            if (answer[i].toLowerCase() in letters) {
+                answer = answer.replace(answer[i], digit)
+                break
+            }
+        }
+    }
+    return answer
 }
