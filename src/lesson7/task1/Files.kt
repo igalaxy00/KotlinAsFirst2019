@@ -54,18 +54,23 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val txt = File(inputName).readText().toLowerCase()
-    val setOfStrings = substrings.toSet()
-    val answer = mutableMapOf<String, Int>()
-    for (i in setOfStrings)
-        answer[i] = 0
-    for (k in setOfStrings) {
-        answer[k] = txt.windowed(k.length) { if (it == k.toLowerCase()) 1 else 0 }.sum()
-    }
-    return answer
-}
 
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val text = File(inputName).readText().toLowerCase()
+    val result = mutableMapOf<String, Int>()
+    for (i in substrings) {
+        result[i] = 0
+    }
+    for (sub in result.keys) {
+        val low = sub.toLowerCase()
+        var lastIndex = text.indexOf(low, 0)
+        while (lastIndex != -1) {
+            result[sub] = result[sub]!! + 1
+            lastIndex = text.indexOf(low, lastIndex + 1)
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -81,27 +86,28 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val letters = mapOf(
-        'ы' to 'и',
-        'Ы' to 'И',
-        'я' to 'а',
-        'Я' to 'А',
-        'ю' to 'у',
-        'Ю' to 'У'
-    )
-    val goodSymbols = listOf('Ч', 'Ж', 'Ш', 'Щ', 'ч', 'ж', 'ш', 'щ')
-    var k = false
-    File(outputName).bufferedWriter().use {
-        for (i in File(inputName).readText()) {
-            k = if (i in letters.keys && k) {
-                it.write(letters[i].toString())
-                false
+    val letters = setOf('ж', 'ч', 'ш', 'щ')
+    val ans = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        val fixedLine = StringBuilder()
+        fixedLine.append(line[0])
+        for (i in 1 until line.length) {
+            if (line[i - 1].toLowerCase() in letters) {
+                when (line[i].toLowerCase()) {
+                    'ы' -> fixedLine.append('и')
+                    'я' -> fixedLine.append('а')
+                    'ю' -> fixedLine.append('у')
+                    else -> fixedLine.append(line[i])
+                }
+                if (line[i].isUpperCase()) fixedLine[i] = fixedLine[i].toUpperCase()
             } else {
-                it.write(i.toString())
-                i in goodSymbols
+                fixedLine.append(line[i])
             }
         }
+        ans.write(fixedLine.toString())
+        ans.newLine()
     }
+    ans.close()
 }
 
 /**
